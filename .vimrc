@@ -1,147 +1,94 @@
-call plug#begin()
+" Pathogen: plugin manager
+execute pathogen#infect()
 
-Plug 'a-watson/vim-gdscript'
+" Number lines relativly
+set number
+set relativenumber
 
-call plug#end()
+" Show command on bottom left
+set showcmd
 
+" Syntastic:
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
+" Tagbar: requires vim 7.3.1058 and tag generation (i.e ctags)
+nmap <F8> :TagbarToggle<CR>
 
+" Ultisnip: snippets engine (uses vim-snippets as the snippets source)
+let g:UltisnipsExpandTrigger="<tab>"
+let g:UltisnipsJumpForwardTrigger="<c-b>"
+let g:UltisnipsJumpBackwardTrigger="<c-z>"
+let g:UltisniptsEditSplit="vertical"
 
+" Search: smart case (otherwise ignore)
+set hlsearch
+set ignorecase
+set smartcase
+set cursorline
 
-filetype plugin indent on
-let g:molokai_original = 1
-set grepprg=grep\ -nH\ $*
-let g:tex_flavor = "latex"
+map <C-m> :nohl<CR>
+" Make sure we use 256 colors
+set t_ut=
+set t_Co=256
+" Gruvbox: colorscheme
+colorscheme gruvbox
+set background=dark
+let g:gruvbox_contrast_dark='hard'
+let g:gruvbox_italic=1
 
-let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
-let g:airline_theme = 'powerlineish'
-let g:airline#extensions#hunks#enabled=0
-let g:airline#extensions#branch#enabled=1
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_symbols.space = "\ua0"
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.notexists = '∄'
-let g:airline_symbols.whitespace = 'Ξ'
-
-
-
-
-filetype on
-" vimrc file for following the coding standards specified in PEP 7 & 8.
-"
-" To use this file, source it in your own personal .vimrc file (``source
-" <filename>``) or, if you don't have a .vimrc file, you can just symlink to it
-" (``ln -s <this file> ~/.vimrc``).  All options are protected by autocmds
-" (read below for an explanation of the command) so blind sourcing of this file
-" is safe and will not affect your settings for non-Python or non-C files.
-"
-"
-" All setting are protected by 'au' ('autocmd') statements.  Only files ending
-" in .py or .pyw will trigger the Python settings while files ending in *.c or
-" *.h will trigger the C settings.  This makes the file "safe" in terms of only
-" adjusting settings for Python and C files.
-"
-" Only basic settings needed to enforce the style guidelines are set.
-" Some suggested options are listed but commented out at the end of this file.
-
-" Number of spaces that a pre-existing tab is equal to.
-" For the amount of space used for a new tab use shiftwidth.
-set tabstop=4
-set shiftwidth=4
-set expandtab
-" What to use for an indent.
-" This will affect Ctrl-T and 'autoindent'.  " Python: 4 spaces
-" C: tabs (pre-existing files) or 4 spaces (new files)
-au BufRead,BufNewFile  *.cs *.py,*pyw set shiftwidth=4
-au BufRead,BufNewFile  *.cs *.py,*.pyw set expandtab
-"fu Select_c_style()
-"    if search('^\t', 'n', 150)
-"        set shiftwidth=4
-"        set noexpandtab
-"    el 
-"        set shiftwidth=4
-"        set expandtab
-"    en
-"endf
-
-
-au BufRead,BufNewFile Makefile* set noexpandtab
 
 " Use the below highlight group when displaying bad whitespace is desired.
 highlight BadWhitespace ctermbg=red guibg=red
-
-" Display tabs at the beginning of a line in Python mode as bad.
-au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
-" Make trailing whitespace be flagged as bad.
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-
-" Wrap text after a certain number of characters
-" Python: 79 
-" C: 79
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h set textwidth=150
-
-" Turn off settings in 'formatoptions' relating to comment formatting.
-" - c : do not automatically insert the comment leader when wrapping based on
-"    'textwidth'
-" - o : do not insert the comment leader when using 'o' or 'O' from command mode
-" - r : do not insert the comment leader when hitting <Enter> in insert mode
-" Python: not needed
-" C: prevents insertion of '*' at the beginning of every line in a comment
-au BufRead,BufNewFile *.c,*.h set formatoptions-=c formatoptions-=o formatoptions-=r
-
+" Display tabs as bad.
+au BufRead,BufNewFile *.py match BadWhiteSpace /^\t\+/
+" Display trailing whitespace as bad
+au BufRead,BufNewFile *.py match BadWhiteSpace /\s\+$/
 " Use UNIX (\n) line endings.
-" Only used for new files so as to not force existing files to change their
-" line endings.
-" Python: yes
-" C: yes
-au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
+au BufNewFile *.py set fileformat=unix
+" Wrap text after a certain number of characters
+" Python: 120
+au BufRead,BufNewFile *.py set textwidth=120
 
+" Netrw: file viewing
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 2
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+" Open with ctrl-e
+function! ToggleVExplorer()
+  if exists("t:expl_buf_num")
+      let expl_win_num = bufwinnr(t:expl_buf_num)
+      if expl_win_num != -1
+          let cur_win_nr = winnr()
+          exec expl_win_num . 'wincmd w'
+          close
+          exec cur_win_nr . 'wincmd w'
+          unlet t:expl_buf_num
+      else
+          unlet t:expl_buf_num
+      endif
+  else
+      exec '1wincmd w'
+      Vexplore
+      let t:expl_buf_num = bufnr("%")
+  endif
+endfunction
+map <silent> <C-E> :call ToggleVExplorer()<CR>
+" Racer configuration
+set hidden
+let g:racer_cmd = "~/.cargo/bin/racer"
+let g:racer_experimental_completer = 1
+let g:rustfmt_autosave = 1
 
-" ----------------------------------------------------------------------------
-" The following section contains suggested settings.  While in no way required
-" to meet coding standards, they are helpful.
-
-" Set the default file encoding to UTF-8: ``set encoding=utf-8``
-
-" Puts a marker at the beginning of the file to differentiate between UTF and
-" UCS encoding (WARNING: can trick shells into thinking a text file is actually
-" a binary file when executing the text file): ``set bomb``
-
-" For full syntax highlighting:
-let python_highlight_all=1
-syntax on
-
-filetype indent on
-set softtabstop=4
-set autoindent
-set number
-set hlsearch
-set ruler
-set title
-set wildmenu
-set wildignore=*.o,*.obj,*.py[co],*.swp,*~,~.pyc
-set laststatus=2
-set matchpairs+=<:>
-set ignorecase
-set smartcase
-set relativenumber
-set number
-set bs=indent,eol,start
-autocmd BufNewFile  *.py	0r ~/.vim/python_template.py
-set scrolloff=5
-
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap gs <Plug>(rust-def-split)
+au FileType rust nmap gx <Plug>(rust-def-vertical)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
